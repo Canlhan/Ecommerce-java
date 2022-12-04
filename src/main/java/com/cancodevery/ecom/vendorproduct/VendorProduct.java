@@ -17,28 +17,28 @@ import javax.persistence.*;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
 public class VendorProduct
 {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "vendorproduct_id")
-    int id;
+    private int id;
 
     @Column(name = "price")
-    float price;
+     private float price;
 
     @Column(name = "quantity")
-    int quantity;
+     private int quantity;
 
     @Column(name = "description")
-    String description;
+     private String description;
 
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "vendor_id")
-    Vendor vendor;
+     private Vendor vendor;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id", referencedColumnName = "product_id")
-    Product product;
+    private Product product;
 
 
 }

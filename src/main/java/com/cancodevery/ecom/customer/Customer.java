@@ -20,6 +20,7 @@ import java.util.List;
 public class Customer implements Serializable {
 
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     int id;

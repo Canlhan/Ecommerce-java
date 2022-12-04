@@ -19,6 +19,7 @@ public class CustomerController {
 
     @GetMapping("/")
     public List<Customer> getAll(){
+        String a=null;
 
         return customerService.getAll();
     }

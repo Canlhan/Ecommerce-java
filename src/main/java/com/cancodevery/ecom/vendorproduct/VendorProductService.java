@@ -1,14 +1,16 @@
 package com.cancodevery.ecom.vendorproduct;
 
 
+import com.cancodevery.ecom.dtos.VendorProductDto;
+
 import java.util.List;
 
 public interface VendorProductService
 {
 
-    List<VendorProduct> getAll();
+    List<VendorProductDto> getAll();
 
-    VendorProduct get(int id);
+    VendorProductDto get(int id);
 
-    VendorProduct save(VendorProduct vendorProduct);
+    VendorProductDto save(VendorProductDto vendorProduct);
 }
