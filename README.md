@@ -1,2 +1,2 @@
 # Ecommerce-java
-this project is backend of my graduated project
+This project is backend of my graduated project
