@@ -1,2 +1,2 @@
 # Ecommerce-java
-Mezuniyet projemin  java backend  kısmı.
+This project is backend of my graduated project
