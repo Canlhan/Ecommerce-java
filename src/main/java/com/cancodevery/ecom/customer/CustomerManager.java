@@ -46,9 +46,8 @@ public class CustomerManager  implements CustomerService{
         user.setEmail(customer.getEmail());
         user.setPassword(new BCryptPasswordEncoder().encode(customer.getPassword()));
 
-        Role role=new Role();
-        role.setRoleName("ROLE_CUSTOMER");
-        role=roleRepository.save(role);
+        Role role=roleRepository.findByRoleName("ROLE_CUSTOMER");
+
         user.getRoles().add(role);
         userRepository.save(user);
 

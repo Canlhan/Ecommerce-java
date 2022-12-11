@@ -2,10 +2,7 @@ package com.cancodevery.ecom.user;
 
 
 import com.cancodevery.ecom.Role.Role;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,7 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "Users")
-
 public class User
 {
     @Id
