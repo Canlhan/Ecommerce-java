@@ -1,6 +1,7 @@
-package com.cancodevery.ecom.vendorproduct;
+package com.cancodevery.ecom.dtos;
 
 import com.cancodevery.ecom.dtos.VendorProductDto;
+import com.cancodevery.ecom.vendorproduct.VendorProduct;
 import org.springframework.stereotype.Component;
 
 @Component

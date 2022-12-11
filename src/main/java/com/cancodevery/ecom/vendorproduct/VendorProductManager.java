@@ -3,12 +3,11 @@ package com.cancodevery.ecom.vendorproduct;
 import com.cancodevery.ecom.category.Category;
 import com.cancodevery.ecom.category.CategoryService;
 import com.cancodevery.ecom.dtos.VendorProductDto;
+import com.cancodevery.ecom.dtos.VendorProductDtoConverter;
 import com.cancodevery.ecom.product.Product;
-import com.cancodevery.ecom.product.ProductDao;
 import com.cancodevery.ecom.product.ProductService;
 import com.cancodevery.ecom.vendor.Vendor;
 import com.cancodevery.ecom.vendor.VendorDao;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
