@@ -18,14 +18,14 @@ public class CustomerController {
     }
 
     @GetMapping("/")
-    public List<Customer> getAll(){
+    public List<CustomerResponseDto> getAll(){
         String a=null;
 
         return customerService.getAll();
     }
 
     @PostMapping("/")
-    public Customer addCustomer(@RequestBody Customer customer){
+    public CustomerResponseDto addCustomer(@RequestBody CustomerRequestDto customer){
 
         return customerService.add(customer);
     }
