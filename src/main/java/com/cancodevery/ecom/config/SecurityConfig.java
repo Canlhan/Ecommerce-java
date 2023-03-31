@@ -34,7 +34,7 @@ public class SecurityConfig
 {
 
 
-    private final CustomUserDetailService customUserDetailService;
+
 
 
      @Bean
@@ -42,44 +42,18 @@ public class SecurityConfig
 
 
          http
-                 .csrf().disable()
-
                  .authorizeRequests()
-                 .antMatchers("/products/")
-
-                 .authenticated()
-                 .and()
-                 .formLogin().disable()
-                 .httpBasic();
-         System.out.println("asd");
-
-
-
-
+                         .anyRequest()
+                                 .authenticated()
+                                         .and()
+                                                 .httpBasic();
 
          return http.build();
      }
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        System.out.println("managera girdi");
-        return authenticationConfiguration.getAuthenticationManager();
-    }
 
-    @Bean
-    public PasswordEncoder encoder() {
-        System.out.println("assw girdi");
-        return new BCryptPasswordEncoder();
-    }
 
-    @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider(){
-        System.out.println("provider");
-         DaoAuthenticationProvider provider=new DaoAuthenticationProvider();
-         provider.setUserDetailsService(this.customUserDetailService);
-         provider.setPasswordEncoder(encoder());
-         return provider;
-    }
+
 
 
 
