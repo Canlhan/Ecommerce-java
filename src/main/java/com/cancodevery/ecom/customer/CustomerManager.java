@@ -4,7 +4,7 @@ import com.cancodevery.ecom.Role.Role;
 import com.cancodevery.ecom.Role.RoleRepository;
 import com.cancodevery.ecom.user.User;
 import com.cancodevery.ecom.user.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,40 +17,50 @@ public class CustomerManager  implements CustomerService{
     private final UserRepository userRepository;
     private final CustomerDao customerDao;
 
+    private final ModelMapper modelMapper;
     private final RoleRepository roleRepository;
 
 
 
-    public CustomerManager(CustomerDao customerDao, UserRepository userRepository,RoleRepository roleRepository)
+    public CustomerManager(CustomerDao customerDao, UserRepository userRepository, ModelMapper modelMapper, RoleRepository roleRepository)
     {
         this.customerDao = customerDao;
         this.userRepository=userRepository;
+        this.modelMapper = modelMapper;
         this.roleRepository=roleRepository;
     }
 
     @Override
-    public List<Customer> getAll() {
-        return customerDao.findAll();
+    public List<CustomerResponseDto> getAll() {
+        List<CustomerResponseDto> customerResponseDtos=new ArrayList<>();
+        customerDao.findAll().forEach(customer -> {
+            customerResponseDtos.add(modelMapper.map(customer,CustomerResponseDto.class));
+        });
+        return customerResponseDtos;
     }
 
     @Override
-    public Customer get(int id) {
-        return customerDao.findById(id).get();
+    public CustomerResponseDto get(int id) {
+        Customer customer=customerDao.findById(id).get();
+        return modelMapper.map(customer,CustomerResponseDto.class);
     }
 
     @Override
-    public Customer add(Customer customer) {
+    public CustomerResponseDto add(CustomerRequestDto customerRequest) {
 
         System.out.println("customer managerda");
         User user=new User();
-        user.setEmail(customer.getEmail());
-        user.setPassword(new BCryptPasswordEncoder().encode(customer.getPassword()));
+        user.setEmail(customerRequest.getEmail());
+        user.setPassword(new BCryptPasswordEncoder().encode(customerRequest.getPassword()));
 
         Role role=roleRepository.findByRoleName("ROLE_CUSTOMER");
 
         user.getRoles().add(role);
         userRepository.save(user);
 
-        return customerDao.save(customer);
+        Customer customer=modelMapper.map(customerRequest,Customer.class);
+        customerDao.save(customer);
+        return modelMapper.map(customer,CustomerResponseDto.class);
+
     }
 }

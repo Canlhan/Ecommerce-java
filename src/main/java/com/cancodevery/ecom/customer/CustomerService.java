@@ -6,10 +6,10 @@ import java.util.List;
 public interface CustomerService {
 
 
-    List<Customer> getAll();
+    List<CustomerResponseDto> getAll();
 
-    Customer get(int id);
+    CustomerResponseDto get(int id);
 
 
-    Customer add(Customer customer);
+    CustomerResponseDto add(CustomerRequestDto customer);
 }

@@ -1,5 +1,7 @@
 package com.cancodevery.ecom.config;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -10,9 +12,12 @@ import java.io.IOException;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
+@Component
+@RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
 
 
+    private final JWTService jwtService;
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -22,11 +27,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         final String userEmail;
         final String jwtToken;
 
-        if(authHeader ==null || !authHeader.startsWith("Bearer")){
+        if(authHeader ==null || !authHeader.startsWith("Bearer ")){
             filterChain.doFilter(request,response);
+            return;
         }
         jwtToken=authHeader.substring(7);
-        userEmail="something";
+        userEmail=jwtService.extractUserEmail(jwtToken);
 
 
 
