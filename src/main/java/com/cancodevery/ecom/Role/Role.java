@@ -1,14 +1,13 @@
 package com.cancodevery.ecom.Role;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Data
 @NoArgsConstructor
-
+@Builder
+@AllArgsConstructor
 @Entity
 @Table(name = "Role")
 public class Role {

@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "Users")
@@ -21,6 +23,8 @@ public class User
 
     @Column(name = "user_email")
     private String email;
+    @Column(name = "user_name")
+    private String username;
 
     @Column(name = "user_password")
     private String password;

@@ -24,6 +24,19 @@ public class JWTService {
     return extractClaim(jwtToken, Claims::getSubject);
 
     }
+    public boolean isTokenValid(String jwtToken, UserDetails userDetails) {
+
+        final String userEmail=extractUserEmail(jwtToken);
+        return (userEmail.equals(userDetails.getUsername()) && !isTokenExpired(jwtToken));
+    }
+
+    private boolean isTokenExpired(String jwtToken) {
+        return extractExpiration(jwtToken).before(new Date());
+    }
+
+    private Date extractExpiration(String jwtToken) {
+        return extractClaim(jwtToken,Claims::getExpiration);
+    }
 
     public String generateToken(UserDetails userDetails) {
 
