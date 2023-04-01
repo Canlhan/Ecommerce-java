@@ -26,12 +26,12 @@ public class AuthService
     private final AuthenticationManager  authenticationManager;
     public AuthenticationResponse register(RegisterRequest request)
     {
-        Role role=Role.builder().roleName("CUSTOMER").build();
+
         var user= User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .username(request.getUsername())
-                .roles(List.of(role))
+                .roles(Roles.CUSTOMER)
                 .build();
         UserDetail userDetail=new UserDetail(user);
         userRepository.save(user);

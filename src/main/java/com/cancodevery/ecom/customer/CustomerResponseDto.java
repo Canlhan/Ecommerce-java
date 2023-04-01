@@ -15,22 +15,9 @@ import java.util.Date;
 public class CustomerResponseDto
 {
     private int id;
-
-
     private String firstName;
-
-
     private String lastName;
-
-
     private Date dob;
-
-
-    private String email;
-
-
-    private String password;
-
-
+    private String token;
     private String contact;
 }

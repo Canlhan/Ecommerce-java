@@ -2,6 +2,7 @@ package com.cancodevery.ecom.user;
 
 
 import com.cancodevery.ecom.Role.Role;
+import com.cancodevery.ecom.Role.Roles;
 import lombok.*;
 
 import javax.persistence.*;
@@ -30,10 +31,12 @@ public class User
     private String password;
 
 
-    @ManyToMany(fetch = FetchType.EAGER)
-            @JoinTable(
-                    joinColumns = {@JoinColumn(name = "user_id",referencedColumnName = "user_id")},
-                    inverseJoinColumns = {@JoinColumn(name = "role_id",referencedColumnName = "role_id")}
-            )
-    List<Role> roles=new ArrayList<>();
+    @Enumerated(EnumType.STRING)
+    private Roles roles;
+//    @ManyToMany(fetch = FetchType.EAGER)
+//            @JoinTable(
+//                    joinColumns = {@JoinColumn(name = "user_id",referencedColumnName = "user_id")},
+//                    inverseJoinColumns = {@JoinColumn(name = "role_id",referencedColumnName = "role_id")}
+//            )
+//    List<Role> roles=new ArrayList<>();
 }

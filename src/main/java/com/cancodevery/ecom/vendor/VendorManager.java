@@ -42,7 +42,7 @@ public class VendorManager implements VendorService{
 
         Role role=roleRepository.findByRoleName("ROLE_VENDOR");
 
-        user.getRoles().add(role);
+
         userRepository.save(user);
         return vendorDao.save(vendor);
     }
