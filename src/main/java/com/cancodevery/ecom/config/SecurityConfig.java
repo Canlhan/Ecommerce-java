@@ -47,7 +47,7 @@ public class SecurityConfig
                  .csrf()
                  .disable()
                  .authorizeHttpRequests()
-                 .antMatchers("/customers/**")
+                 .antMatchers("/customers/**","/api/v1/auth/authenticate")
                  .permitAll()
                  .anyRequest()
                  .authenticated()
