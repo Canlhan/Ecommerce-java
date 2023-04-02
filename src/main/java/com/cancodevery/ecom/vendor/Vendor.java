@@ -32,9 +32,6 @@ public class Vendor
     @Column(name = "email")
     String email;
 
-    @Column(name = "password")
-    String password;
-
     @Column(name = "contact")
     String contact;
 

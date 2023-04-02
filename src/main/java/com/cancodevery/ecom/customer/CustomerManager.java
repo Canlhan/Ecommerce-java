@@ -2,6 +2,7 @@ package com.cancodevery.ecom.customer;
 
 import com.cancodevery.ecom.Role.Role;
 import com.cancodevery.ecom.Role.RoleRepository;
+import com.cancodevery.ecom.Role.Roles;
 import com.cancodevery.ecom.auth.AuthService;
 import com.cancodevery.ecom.auth.AuthenticationResponse;
 import com.cancodevery.ecom.auth.RegisterRequest;
@@ -26,7 +27,7 @@ public class CustomerManager  implements CustomerService{
 
     private final AuthService authService;
     private final ModelMapper modelMapper;
-    private final RoleRepository roleRepository;
+
 
 
 
@@ -48,11 +49,11 @@ public class CustomerManager  implements CustomerService{
     }
 
     @Override
-    public CustomerResponseDto add(CustomerRequestDto customerRequest) {
+    public CustomerResponseDto register(CustomerRequestDto customerRequest) {
 
         System.out.println("customer managerda");
         AuthenticationResponse authenticationResponse =authService.register(
-                RegisterRequest.builder().email(customerRequest.getEmail()).password(customerRequest.getPassword())
+                RegisterRequest.builder().roles(Roles.CUSTOMER).email(customerRequest.getEmail()).password(customerRequest.getPassword())
                 .username(customerRequest.getFirstName()).build());
 
         log.info("customer managerda",authenticationResponse.getToken());

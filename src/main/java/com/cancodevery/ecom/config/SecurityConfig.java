@@ -1,5 +1,6 @@
 package com.cancodevery.ecom.config;
 
+import com.cancodevery.ecom.Role.Roles;
 import com.cancodevery.ecom.user.CustomUserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
@@ -47,8 +48,10 @@ public class SecurityConfig
                  .csrf()
                  .disable()
                  .authorizeHttpRequests()
-                 .antMatchers("/customers/**","/api/v1/auth/authenticate")
-                 .permitAll()
+                 .antMatchers("/api/v1/customers/register",
+                         "/api/v1/auth/authenticate",
+                         "/api/v1/vendors/register").permitAll()
+
                  .anyRequest()
                  .authenticated()
                  .and()

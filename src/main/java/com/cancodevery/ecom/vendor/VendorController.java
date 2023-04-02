@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @CrossOrigin
 @RestController
-@RequestMapping("/vendors")
+@RequestMapping("/api/v1/vendors")
 public class VendorController
 {
     private VendorService vendorService;
@@ -17,12 +17,13 @@ public class VendorController
     }
 
     @GetMapping("/")
-    public List<Vendor> getAll(){
+    public List<VendorResponseDto> getAll(){
         return vendorService.getAll();
     }
 
-    @PostMapping("/")
-    public Vendor add(@RequestBody Vendor vendor){
-        return vendorService.save(vendor);
+    @PostMapping("/register")
+    public VendorResponseDto add(@RequestBody VendorRequestDto vendorRequestDto){
+
+        return vendorService.register(vendorRequestDto);
     }
 }
