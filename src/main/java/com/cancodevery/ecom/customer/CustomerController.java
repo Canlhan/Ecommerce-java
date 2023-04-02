@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @CrossOrigin
 @RestController
-@RequestMapping("/customers")
+@RequestMapping("/api/v1/customers")
 public class CustomerController {
 
     private CustomerService customerService;
@@ -24,10 +24,10 @@ public class CustomerController {
         return customerService.getAll();
     }
 
-    @PostMapping("/")
+    @PostMapping("/register")
     public CustomerResponseDto addCustomer(@RequestBody CustomerRequestDto customer){
 
-        return customerService.add(customer);
+        return customerService.register(customer);
     }
 
 

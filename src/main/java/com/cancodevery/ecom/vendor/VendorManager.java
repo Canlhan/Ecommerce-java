@@ -1,49 +1,68 @@
 package com.cancodevery.ecom.vendor;
 
+import com.cancodevery.ecom.Exception.UserNotFound;
 import com.cancodevery.ecom.Role.Role;
 import com.cancodevery.ecom.Role.RoleRepository;
+import com.cancodevery.ecom.Role.Roles;
+import com.cancodevery.ecom.auth.AuthService;
+import com.cancodevery.ecom.auth.AuthenticationResponse;
+import com.cancodevery.ecom.auth.RegisterRequest;
 import com.cancodevery.ecom.user.User;
 import com.cancodevery.ecom.user.UserRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class VendorManager implements VendorService{
     private final VendorDao vendorDao;
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    @Autowired
-    public VendorManager(VendorDao vendorDao,UserRepository userRepository,RoleRepository roleRepository) {
-        this.vendorDao = vendorDao;
-        this.userRepository=userRepository;
-        this.roleRepository=roleRepository;
+    private final ModelMapper modelMapper;
+    private final AuthService authService;
+
+
+    @Override
+    public List<VendorResponseDto> getAll() {
+        List<VendorResponseDto> vendorResponseDtos=new ArrayList<>();
+        vendorDao.findAll().stream().forEach(vendor->{
+            vendorResponseDtos.add( modelMapper.map(vendor,VendorResponseDto.class));
+
+        });
+        return vendorResponseDtos;
     }
 
     @Override
-    public List<Vendor> getAll() {
-        return vendorDao.findAll();
+    public VendorResponseDto get(int id) {
+        Vendor vendor=vendorDao.findById(id).orElseThrow(()->new UserNotFound("Vendor not found"));
+
+        return modelMapper.map(vendor,VendorResponseDto.class);
+
     }
 
     @Override
-    public Vendor get(int id) {
-        return vendorDao.findById(id).get();
-    }
-
-    @Override
-    public Vendor save(Vendor vendor) {
-
-        User user=new User();
-        user.setPassword(new BCryptPasswordEncoder().encode(vendor.getPassword()));
-        user.setEmail(vendor.getEmail());
-
-        Role role=roleRepository.findByRoleName("ROLE_VENDOR");
+    public VendorResponseDto register(VendorRequestDto vendorRequestDto) {
 
 
-        userRepository.save(user);
-        return vendorDao.save(vendor);
+        AuthenticationResponse authenticationResponse =authService.register(
+                RegisterRequest.builder().roles(Roles.VENDOR).username(vendorRequestDto.getName()).password(vendorRequestDto.getPassword()).email(vendorRequestDto.getEmail()).build());
+
+       Vendor vendor=modelMapper.map(vendorRequestDto,Vendor.class);
+       vendorDao.save(vendor);
+       log.info("vendor managerda",authenticationResponse.getToken());
+
+       VendorResponseDto vendorResponseDto=modelMapper.map(vendor,VendorResponseDto.class);
+       vendorResponseDto.setToken(authenticationResponse.getToken());
+
+        return vendorResponseDto;
     }
 }

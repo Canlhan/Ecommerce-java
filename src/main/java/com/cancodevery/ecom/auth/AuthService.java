@@ -31,7 +31,7 @@ public class AuthService
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .username(request.getUsername())
-                .roles(Roles.CUSTOMER)
+                .roles(request.getRoles())
                 .build();
         UserDetail userDetail=new UserDetail(user);
         userRepository.save(user);

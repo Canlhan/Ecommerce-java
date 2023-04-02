@@ -11,5 +11,5 @@ public interface CustomerService {
     CustomerResponseDto get(int id);
 
 
-    CustomerResponseDto add(CustomerRequestDto customer);
+    CustomerResponseDto register(CustomerRequestDto customer);
 }

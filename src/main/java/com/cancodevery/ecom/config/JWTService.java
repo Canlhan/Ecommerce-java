@@ -45,14 +45,16 @@ public class JWTService {
     public String generateToken(Map<String,Object> extraClaims,
                                 UserDetails userDetails) {
 
+        Claims claims=Jwts.claims();
+        claims.put("role",userDetails.getAuthorities());
+        claims.putAll(extraClaims);
         return Jwts
                 .builder()
-                .setClaims(extraClaims)
+                .setClaims(claims)
                 .setSubject(userDetails.getUsername()).
                 setIssuedAt(new Date(System.currentTimeMillis())).
                 setExpiration(new Date(System.currentTimeMillis()+1000*60*60*10))
                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
-
                 .compact();
     }
     public <T> T extractClaim(String jwtToken, Function<Claims,T> claimResolver) {

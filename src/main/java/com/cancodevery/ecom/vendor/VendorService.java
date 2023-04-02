@@ -4,9 +4,9 @@ import java.util.List;
 
 public interface VendorService
 {
-    List<Vendor> getAll();
+    List<VendorResponseDto> getAll();
 
-    Vendor get(int id);
+    VendorResponseDto get(int id);
 
-    Vendor save(Vendor vendor);
+    VendorResponseDto register(VendorRequestDto vendor);
 }
