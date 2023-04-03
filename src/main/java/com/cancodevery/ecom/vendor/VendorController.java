@@ -26,4 +26,9 @@ public class VendorController
 
         return vendorService.register(vendorRequestDto);
     }
+
+    @GetMapping("/{email}")
+    public VendorResponseDto get(@PathVariable String email){
+        return vendorService.get(email);
+    }
 }
