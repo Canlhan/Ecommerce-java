@@ -2,12 +2,13 @@ package com.cancodevery.ecom.vendorproduct;
 
 import com.cancodevery.ecom.dtos.VendorProductDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @CrossOrigin
 @RestController
-@RequestMapping("/vendorproducts")
+@RequestMapping("/api/v1/vendorproducts")
 public class VendorProductController
 {
 
@@ -19,14 +20,27 @@ public class VendorProductController
     }
 
     @GetMapping("/")
-    public List<VendorProductDto> getAll(){
+    public ResponseEntity<List<VendorProductResponseDto>> getAll(){
+        try {
+            List<VendorProductResponseDto> vendorProductResponseDtos=vendorProductService.getAll();
+            return ResponseEntity.ok(vendorProductResponseDtos);
 
-        return vendorProductService.getAll();
+        }catch (Exception e){
+            return ResponseEntity.badRequest().build();
+        }
+
+
     }
 
     @PostMapping("/")
-    public VendorProductDto add(@RequestBody VendorProductDto vendorProduct){
+    public ResponseEntity<VendorProductResponseDto> add(@RequestBody VendorProductRequestDto vendorProductRequestDto){
+        try {
+            VendorProductResponseDto vendorProductResponseDto=vendorProductService.save(vendorProductRequestDto);
+            return ResponseEntity.ok(vendorProductResponseDto);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().build();
+        }
 
-       return  vendorProductService.save(vendorProduct);
+
     }
 }

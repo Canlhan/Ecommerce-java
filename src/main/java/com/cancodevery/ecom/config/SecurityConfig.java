@@ -50,8 +50,7 @@ public class SecurityConfig
                  .authorizeHttpRequests()
                  .antMatchers("/api/v1/customers/register",
                          "/api/v1/auth/authenticate",
-                         "/api/v1/vendors/register").permitAll()
-
+                         "/api/v1/vendors/register","/api/v1/vendorproducts/**","/api/v1/categories/**").permitAll()
                  .anyRequest()
                  .authenticated()
                  .and()
