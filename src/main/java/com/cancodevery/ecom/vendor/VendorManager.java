@@ -65,4 +65,11 @@ public class VendorManager implements VendorService{
 
         return vendorResponseDto;
     }
+
+    @Override
+    public VendorResponseDto get(String email) {
+        Vendor vendor=vendorDao.findVendorByEmail(email).orElseThrow(()->new UserNotFound("Vendor not found"));
+
+        return modelMapper.map(vendor,VendorResponseDto.class);
+    }
 }

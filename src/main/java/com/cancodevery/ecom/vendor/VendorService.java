@@ -9,4 +9,5 @@ public interface VendorService
     VendorResponseDto get(int id);
 
     VendorResponseDto register(VendorRequestDto vendor);
+    VendorResponseDto get(String email);
 }
