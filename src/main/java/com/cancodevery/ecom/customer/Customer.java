@@ -34,7 +34,7 @@ public class Customer implements Serializable {
     @Column(name = "dob")
      private Date dob;
 
-    @Column(name = "email")
+    @Column(name = "email",unique = true)
      private String email;
 
 

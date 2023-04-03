@@ -8,9 +8,9 @@ import java.util.List;
 public interface VendorProductService
 {
 
-    List<VendorProductDto> getAll();
+    List<VendorProductResponseDto> getAll();
 
-    VendorProductDto get(int id);
+    VendorProductResponseDto get(int id);
 
-    VendorProductDto save(VendorProductDto vendorProduct);
+    VendorProductResponseDto save(VendorProductRequestDto vendorProductRequestDto);
 }

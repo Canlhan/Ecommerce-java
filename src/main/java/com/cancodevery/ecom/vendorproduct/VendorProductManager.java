@@ -1,5 +1,6 @@
 package com.cancodevery.ecom.vendorproduct;
 
+import com.cancodevery.ecom.Exception.VendorProductNotFound;
 import com.cancodevery.ecom.category.Category;
 import com.cancodevery.ecom.category.CategoryService;
 import com.cancodevery.ecom.dtos.VendorProductDto;
@@ -8,49 +9,55 @@ import com.cancodevery.ecom.product.Product;
 import com.cancodevery.ecom.product.ProductService;
 import com.cancodevery.ecom.vendor.Vendor;
 import com.cancodevery.ecom.vendor.VendorDao;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class VendorProductManager implements VendorProductService{
     private final VendorProductDao vendorProductDao;
-    private final VendorProductDtoConverter vendorProductDtoConverter;
+
 
     private final VendorDao vendorDao;
     private final ProductService productService;
     private final CategoryService categoryService;
+    private final ModelMapper modelMapper;
 
-    public VendorProductManager(VendorProductDao vendorProductDao,VendorProductDtoConverter vendorProductDtoConverter, VendorDao vendorDao
-    ,ProductService productService,CategoryService categoryService) {
-        this.vendorProductDao = vendorProductDao;
-        this.vendorProductDtoConverter=vendorProductDtoConverter;
-        this.vendorDao=vendorDao;
-        this.productService=productService;
-        this.categoryService=categoryService;
+
+
+    @Override
+    public List<VendorProductResponseDto> getAll() {
+        List<VendorProductResponseDto> vendorProductResponseDtos=new ArrayList<>();
+        vendorProductDao.findAll().stream().forEach(vendorProduct -> {
+            vendorProductResponseDtos.add(modelMapper.map(vendorProduct,VendorProductResponseDto.class));
+        });
+
+
+        return  vendorProductResponseDtos;
     }
 
     @Override
-    public List<VendorProductDto> getAll() {
-
-
-        return vendorProductDao.findAll().stream().map(vendorProductDtoConverter::convert).collect(Collectors.toList());
+    public VendorProductResponseDto get(int id) {
+        VendorProduct vendorProduct=vendorProductDao.findById(id).orElseThrow(()-> new VendorProductNotFound("VendorProduct not found"));
+        return modelMapper.map(vendorProduct,VendorProductResponseDto.class) ;
     }
 
     @Override
-    public VendorProductDto get(int id) {
-        return vendorProductDtoConverter.convert(vendorProductDao.findById(id).get()) ;
-    }
+    public VendorProductResponseDto save(VendorProductRequestDto vendorProduct) {
 
-    @Override
-    public VendorProductDto save(VendorProductDto vendorProduct) {
+        Product product=productService.save(vendorProduct.getProduct());
+        vendorProduct.setProduct(product);
+        VendorProduct vendorProductsaved=modelMapper.map(vendorProduct,VendorProduct.class);
 
-        VendorProduct vendorProductsaved=new VendorProduct();
-        vendorProductsaved.setDescription(vendorProduct.getDescription());
-        vendorProductsaved.setPrice(vendorProduct.getPrice());
-        vendorProductsaved.setQuantity(vendorProduct.getQuantity());
+        return modelMapper.map(vendorProductDao.save(vendorProductsaved),VendorProductResponseDto.class);
 
+
+        /*
         Category category=categoryService.findById(vendorProduct.getCategoryId());
         Vendor  vendor=vendorDao.findById(vendorProduct.getVendorId()).get();
 
@@ -72,8 +79,8 @@ public class VendorProductManager implements VendorProductService{
         product.setVendorProduct(vendorProductsaved);
 
 
-        productService.save(product);
+         */
 
-        return vendorProductDtoConverter.convert(vendorProductsaved) ;
+
     }
 }

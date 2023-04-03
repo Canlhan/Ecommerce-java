@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @CrossOrigin
 @RestController
-@RequestMapping(path = "/categories")
+@RequestMapping(path = "/api/v1/categories")
 public class CategoryController
 {
 
