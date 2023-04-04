@@ -1,32 +1,21 @@
 package com.cancodevery.ecom.config;
 
-import com.cancodevery.ecom.Role.Roles;
-import com.cancodevery.ecom.user.CustomUserDetailService;
+import com.cancodevery.ecom.role.RoleType;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import javax.servlet.*;
-import java.io.IOException;
-
-import static org.springframework.security.config.Customizer.withDefaults;
 
 
 @EnableWebSecurity
@@ -48,9 +37,9 @@ public class SecurityConfig
                  .csrf()
                  .disable()
                  .authorizeHttpRequests()
-                 .antMatchers("/api/v1/customers/register",
-                         "/api/v1/auth/authenticate",
-                         "/api/v1/vendors/register","/api/v1/vendorproducts/**","/api/v1/categories/**").permitAll()
+                 .antMatchers("/api/v1/auth/authenticate","/api/v1/customers/register",
+                         "/api/v1/vendors/register","/api/v1/vendors/{email}","/api/v1/categories/**").permitAll()
+                 .antMatchers("/api/v1/vendorproducts/").hasAuthority(RoleType.ROLE_VENDOR.toString())
                  .anyRequest()
                  .authenticated()
                  .and()

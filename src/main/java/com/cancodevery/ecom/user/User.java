@@ -1,13 +1,10 @@
 package com.cancodevery.ecom.user;
 
 
-import com.cancodevery.ecom.Role.Role;
-import com.cancodevery.ecom.Role.Roles;
+import com.cancodevery.ecom.role.RoleType;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Builder
@@ -32,7 +29,7 @@ public class User
 
 
     @Enumerated(EnumType.STRING)
-    private Roles roles;
+    private RoleType roleType;
 //    @ManyToMany(fetch = FetchType.EAGER)
 //            @JoinTable(
 //                    joinColumns = {@JoinColumn(name = "user_id",referencedColumnName = "user_id")},

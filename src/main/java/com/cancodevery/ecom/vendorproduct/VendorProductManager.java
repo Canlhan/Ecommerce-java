@@ -10,6 +10,7 @@ import com.cancodevery.ecom.product.ProductService;
 import com.cancodevery.ecom.vendor.Vendor;
 import com.cancodevery.ecom.vendor.VendorDao;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class VendorProductManager implements VendorProductService{
     private final VendorProductDao vendorProductDao;
 
@@ -48,28 +50,38 @@ public class VendorProductManager implements VendorProductService{
     }
 
     @Override
-    public VendorProductResponseDto save(VendorProductRequestDto vendorProduct) {
+    public VendorProductResponseDto save(VendorProductRequestDto vendorProductRequestDto) {
 
-        Product product=productService.save(vendorProduct.getProduct());
-        vendorProduct.setProduct(product);
-        VendorProduct vendorProductsaved=modelMapper.map(vendorProduct,VendorProduct.class);
 
-        return modelMapper.map(vendorProductDao.save(vendorProductsaved),VendorProductResponseDto.class);
+
+        Product product=productService.save(vendorProductRequestDto.getProduct());
+        vendorProductRequestDto.setProduct(product);
+        log.info("product saved",product.getProductName());
+
+        Vendor vendor=vendorDao.findVendorByEmail(vendorProductRequestDto.getVendor().getEmail()).orElseThrow(()->
+                new VendorProductNotFound("Vendor not found in vendorProductManager"));
+
+        VendorProduct vendorProductsaved=modelMapper.map(vendorProductRequestDto,VendorProduct.class);
+        vendorProductsaved.setVendor(vendor);
+        log.info("vendorProductRequestDto ",vendorProductsaved.toString());
+        VendorProduct vendorProduct1=vendorProductDao.save(vendorProductsaved);
+        log.error("vendorProductRequestDto saved",vendorProduct1);
+        return modelMapper.map(vendorProduct1,VendorProductResponseDto.class);
 
 
         /*
-        Category category=categoryService.findById(vendorProduct.getCategoryId());
-        Vendor  vendor=vendorDao.findById(vendorProduct.getVendorId()).get();
+        Category category=categoryService.findById(vendorProductRequestDto.getCategoryId());
+        Vendor  vendor=vendorDao.findById(vendorProductRequestDto.getVendorId()).get();
 
 
         Product product=new Product();
-        product.setProductName(vendorProduct.getProductName());
-        product.setProductPhoto(vendorProduct.getProductPhoto());
+        product.setProductName(vendorProductRequestDto.getProductName());
+        product.setProductPhoto(vendorProductRequestDto.getProductPhoto());
         product.setCategory(category);
-        product.setProductPhoto(vendorProduct.getProductPhoto());
+        product.setProductPhoto(vendorProductRequestDto.getProductPhoto());
         product.setState(true);
-        product.setUnitInStock(vendorProduct.getUnitInStock());
-        product.setUnitPrice(vendorProduct.getUnitPrice());
+        product.setUnitInStock(vendorProductRequestDto.getUnitInStock());
+        product.setUnitPrice(vendorProductRequestDto.getUnitPrice());
 
 
         vendorProductsaved.setVendor(vendor);

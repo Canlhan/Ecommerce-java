@@ -1,17 +1,12 @@
 package com.cancodevery.ecom.customer;
 
-import com.cancodevery.ecom.Role.Role;
-import com.cancodevery.ecom.Role.RoleRepository;
-import com.cancodevery.ecom.Role.Roles;
+import com.cancodevery.ecom.role.RoleType;
 import com.cancodevery.ecom.auth.AuthService;
 import com.cancodevery.ecom.auth.AuthenticationResponse;
 import com.cancodevery.ecom.auth.RegisterRequest;
-import com.cancodevery.ecom.user.User;
-import com.cancodevery.ecom.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -53,7 +48,8 @@ public class CustomerManager  implements CustomerService{
 
         System.out.println("customer managerda");
         AuthenticationResponse authenticationResponse =authService.register(
-                RegisterRequest.builder().roles(Roles.CUSTOMER).email(customerRequest.getEmail()).password(customerRequest.getPassword())
+                RegisterRequest.builder().roleType(RoleType.ROLE_CUSTOMER)
+                        .email(customerRequest.getEmail()).password(customerRequest.getPassword())
                 .username(customerRequest.getFirstName()).build());
 
         log.info("customer managerda",authenticationResponse.getToken());

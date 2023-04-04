@@ -31,4 +31,10 @@ public class CategoryServiceImpl implements CategoryService{
 
         return categoryDao.save(category);
     }
+
+    @Override
+    public Category findCategoryByCategoryName(String categoryName) {
+
+        return categoryDao.findCategoryByCategoryName(categoryName);
+    }
 }
