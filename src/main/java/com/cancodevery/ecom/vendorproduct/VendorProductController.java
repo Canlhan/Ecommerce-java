@@ -26,7 +26,7 @@ public class VendorProductController
             return ResponseEntity.ok(vendorProductResponseDtos);
 
         }catch (Exception e){
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(null);
         }
 
 

@@ -33,13 +33,13 @@ public class SecurityConfig
      public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 
 
-         http
+         http.cors().and()
                  .csrf()
                  .disable()
                  .authorizeHttpRequests()
                  .antMatchers("/api/v1/auth/authenticate","/api/v1/customers/register",
-                         "/api/v1/vendors/register","/api/v1/vendors/{email}","/api/v1/categories/**").permitAll()
-                 .antMatchers("/api/v1/vendorproducts/").hasAuthority(RoleType.ROLE_VENDOR.toString())
+                         "/api/v1/vendors/register","/api/v1/categories/**").permitAll()
+                 .antMatchers("/api/v1/vendorproducts/","/api/v1/vendors/{email}").hasAuthority(RoleType.ROLE_VENDOR.toString())
                  .anyRequest()
                  .authenticated()
                  .and()
