@@ -27,9 +27,7 @@ public class VendorProductManager implements VendorProductService{
 
     private final VendorDao vendorDao;
     private final ProductService productService;
-    private final CategoryService categoryService;
     private final ModelMapper modelMapper;
-
 
 
     @Override
@@ -38,7 +36,6 @@ public class VendorProductManager implements VendorProductService{
         vendorProductDao.findAll().stream().forEach(vendorProduct -> {
             vendorProductResponseDtos.add(modelMapper.map(vendorProduct,VendorProductResponseDto.class));
         });
-
 
         return  vendorProductResponseDtos;
     }
@@ -51,8 +48,6 @@ public class VendorProductManager implements VendorProductService{
 
     @Override
     public VendorProductResponseDto save(VendorProductRequestDto vendorProductRequestDto) {
-
-
 
         Product product=productService.save(vendorProductRequestDto.getProduct());
         System.out.println(" product saved"+product.getProductName());
@@ -68,37 +63,10 @@ public class VendorProductManager implements VendorProductService{
         VendorProduct vendorProduct1=vendorProductDao.save(vendorProductsaved);
         System.out.println(vendorProduct1.getProduct().getProductName());
         log.error("vendorProductRequestDto saved",vendorProduct1);
+
         VendorProductResponseDto vendorProductResponseDto=modelMapper.map(vendorProduct1,VendorProductResponseDto.class);
-        vendorProductResponseDto.setCategory(product.getCategory());
-        System.out.println( vendorProductResponseDto.getCategory().getCategoryName());
+
         return modelMapper.map(vendorProduct1,VendorProductResponseDto.class);
-
-
-        /*
-        Category category=categoryService.findById(vendorProductRequestDto.getCategoryId());
-        Vendor  vendor=vendorDao.findById(vendorProductRequestDto.getVendorId()).get();
-
-
-        Product product=new Product();
-        product.setProductName(vendorProductRequestDto.getProductName());
-        product.setProductPhoto(vendorProductRequestDto.getProductPhoto());
-        product.setCategory(category);
-        product.setProductPhoto(vendorProductRequestDto.getProductPhoto());
-        product.setState(true);
-        product.setUnitInStock(vendorProductRequestDto.getUnitInStock());
-        product.setUnitPrice(vendorProductRequestDto.getUnitPrice());
-
-
-        vendorProductsaved.setVendor(vendor);
-        vendorProductsaved.setProduct(product);
-
-        vendorProductsaved=vendorProductDao.save(vendorProductsaved);
-        product.setVendorProduct(vendorProductsaved);
-
-
-         */
-
-
     }
 
     @Override
@@ -107,6 +75,13 @@ public class VendorProductManager implements VendorProductService{
         Vendor vendor=vendorDao.findById(vendorId).orElseThrow(()-> new VendorProductNotFound("Vendor not found"));
         List<VendorProduct> vendorProducts=vendorProductDao.findVendorProductsByVendorId(vendorId);
 
+        return vendorProducts.stream().map(vendorProduct -> modelMapper.map(vendorProduct,VendorProductResponseDto.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<VendorProductResponseDto> getVendorProductsByCategoryId(int categoryId) {
+
+        List<VendorProduct> vendorProducts=vendorProductDao.findVendorProductsByProduct_Category_Id(categoryId);
         return vendorProducts.stream().map(vendorProduct -> modelMapper.map(vendorProduct,VendorProductResponseDto.class)).collect(Collectors.toList());
     }
 }

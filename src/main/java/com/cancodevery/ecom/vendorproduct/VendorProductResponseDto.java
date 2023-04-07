@@ -32,5 +32,5 @@ public class VendorProductResponseDto
 
 
     private Product product;
-    private Category category;
+
 }

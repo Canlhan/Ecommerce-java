@@ -7,4 +7,5 @@ import java.util.List;
 public interface VendorProductDao extends JpaRepository<VendorProduct,Integer> {
 
     List<VendorProduct> findVendorProductsByVendorId(int vendorId);
+    List<VendorProduct> findVendorProductsByProduct_Category_Id(int categoryId);
 }
