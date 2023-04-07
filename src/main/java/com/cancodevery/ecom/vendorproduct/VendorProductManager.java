@@ -69,7 +69,8 @@ public class VendorProductManager implements VendorProductService{
         System.out.println(vendorProduct1.getProduct().getProductName());
         log.error("vendorProductRequestDto saved",vendorProduct1);
         VendorProductResponseDto vendorProductResponseDto=modelMapper.map(vendorProduct1,VendorProductResponseDto.class);
-        System.out.println(vendorProductResponseDto.getProduct().getProductName());
+        vendorProductResponseDto.setCategory(product.getCategory());
+        System.out.println( vendorProductResponseDto.getCategory().getCategoryName());
         return modelMapper.map(vendorProduct1,VendorProductResponseDto.class);
 
 
@@ -98,5 +99,14 @@ public class VendorProductManager implements VendorProductService{
          */
 
 
+    }
+
+    @Override
+    public List<VendorProductResponseDto> getVendorProductsByVendorId(int vendorId) {
+
+        Vendor vendor=vendorDao.findById(vendorId).orElseThrow(()-> new VendorProductNotFound("Vendor not found"));
+        List<VendorProduct> vendorProducts=vendorProductDao.findVendorProductsByVendorId(vendorId);
+
+        return vendorProducts.stream().map(vendorProduct -> modelMapper.map(vendorProduct,VendorProductResponseDto.class)).collect(Collectors.toList());
     }
 }

@@ -36,6 +36,6 @@ public class Vendor
     String contact;
 
 
-    @OneToMany(mappedBy = "vendor",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "vendor",cascade = CascadeType.ALL)
     List<VendorProduct> vendorProducts=new ArrayList<>();
 }

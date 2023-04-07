@@ -13,4 +13,5 @@ public interface VendorProductService
     VendorProductResponseDto get(int id);
 
     VendorProductResponseDto save(VendorProductRequestDto vendorProductRequestDto);
+    List<VendorProductResponseDto> getVendorProductsByVendorId(int vendorId);
 }

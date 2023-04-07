@@ -43,4 +43,18 @@ public class VendorProductController
 
 
     }
+
+    @GetMapping("/{vendorId}")
+    public ResponseEntity<List<VendorProductResponseDto>> getVendorProducts(@PathVariable int vendorId) {
+        try {
+            List<VendorProductResponseDto> vendorProductResponseDtos = vendorProductService.getVendorProductsByVendorId(vendorId);
+            vendorProductResponseDtos.forEach(vendorProductResponseDto -> {
+                System.out.println(vendorProductResponseDto.getCategory().getCategoryName());
+            });
+            return ResponseEntity.ok(vendorProductResponseDtos);
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
 }
