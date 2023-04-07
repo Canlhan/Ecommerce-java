@@ -50,7 +50,7 @@ public class VendorProductManager implements VendorProductService{
     public VendorProductResponseDto save(VendorProductRequestDto vendorProductRequestDto) {
 
         Product product=productService.save(vendorProductRequestDto.getProduct());
-        System.out.println(" product saved"+product.getProductName());
+
         log.info("product saved",product.getProductName());
 
         Vendor vendor=vendorDao.findVendorByEmail(vendorProductRequestDto.getVendor().getEmail()).orElseThrow(()->
@@ -61,10 +61,9 @@ public class VendorProductManager implements VendorProductService{
         vendorProductsaved.setProduct(product);
         log.info("vendorProductRequestDto ",vendorProductsaved.getProduct().getProductName());
         VendorProduct vendorProduct1=vendorProductDao.save(vendorProductsaved);
-        System.out.println(vendorProduct1.getProduct().getProductName());
+
         log.error("vendorProductRequestDto saved",vendorProduct1);
 
-        VendorProductResponseDto vendorProductResponseDto=modelMapper.map(vendorProduct1,VendorProductResponseDto.class);
 
         return modelMapper.map(vendorProduct1,VendorProductResponseDto.class);
     }
