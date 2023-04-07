@@ -26,7 +26,7 @@ public class VendorProductController
             return ResponseEntity.ok(vendorProductResponseDtos);
 
         }catch (Exception e){
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(null);
         }
 
 
@@ -42,5 +42,28 @@ public class VendorProductController
         }
 
 
+    }
+
+    @GetMapping("/{vendorId}")
+    public ResponseEntity<List<VendorProductResponseDto>> getVendorProducts(@PathVariable int vendorId) {
+        try {
+            List<VendorProductResponseDto> vendorProductResponseDtos = vendorProductService.getVendorProductsByVendorId(vendorId);
+
+            return ResponseEntity.ok(vendorProductResponseDtos);
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<List<VendorProductResponseDto>> getVendorProductsByCategory(@PathVariable int categoryId) {
+        try {
+            List<VendorProductResponseDto> vendorProductResponseDtos = vendorProductService.getVendorProductsByCategoryId(categoryId);
+
+            return ResponseEntity.ok(vendorProductResponseDtos);
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.cancodevery.ecom.vendor;
 
 import com.cancodevery.ecom.vendorproduct.VendorProduct;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,9 +24,10 @@ public class VendorResponseDto
 
     private String adress;
 
-    private String token;
+    private String email;
 
     private String contact;
+
 
      private List<VendorProduct> vendorProducts=new ArrayList<>();
 }

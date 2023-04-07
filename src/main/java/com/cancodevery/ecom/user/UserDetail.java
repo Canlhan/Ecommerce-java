@@ -1,17 +1,12 @@
 package com.cancodevery.ecom.user;
 
-import com.cancodevery.ecom.Role.Roles;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 public class UserDetail implements UserDetails {
@@ -26,7 +21,7 @@ public class UserDetail implements UserDetails {
     public UserDetail(User user) {
         this.email=user.getEmail();
         this.password=user.getPassword();
-        this.roles= List.of(new SimpleGrantedAuthority(user.getRoles().name()));
+        this.roles= List.of(new SimpleGrantedAuthority(user.getRoleType().name()));
     }
 
     @Override

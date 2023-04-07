@@ -1,5 +1,7 @@
 package com.cancodevery.ecom.vendor;
 
+import com.cancodevery.ecom.auth.AuthenticationResponse;
+
 import java.util.List;
 
 public interface VendorService
@@ -8,6 +10,6 @@ public interface VendorService
 
     VendorResponseDto get(int id);
 
-    VendorResponseDto register(VendorRequestDto vendor);
+    AuthenticationResponse register(VendorRequestDto vendor);
     VendorResponseDto get(String email);
 }

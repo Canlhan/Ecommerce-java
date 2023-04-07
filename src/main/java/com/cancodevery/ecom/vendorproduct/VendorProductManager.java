@@ -10,6 +10,7 @@ import com.cancodevery.ecom.product.ProductService;
 import com.cancodevery.ecom.vendor.Vendor;
 import com.cancodevery.ecom.vendor.VendorDao;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -19,15 +20,14 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class VendorProductManager implements VendorProductService{
     private final VendorProductDao vendorProductDao;
 
 
     private final VendorDao vendorDao;
     private final ProductService productService;
-    private final CategoryService categoryService;
     private final ModelMapper modelMapper;
-
 
 
     @Override
@@ -36,7 +36,6 @@ public class VendorProductManager implements VendorProductService{
         vendorProductDao.findAll().stream().forEach(vendorProduct -> {
             vendorProductResponseDtos.add(modelMapper.map(vendorProduct,VendorProductResponseDto.class));
         });
-
 
         return  vendorProductResponseDtos;
     }
@@ -48,39 +47,41 @@ public class VendorProductManager implements VendorProductService{
     }
 
     @Override
-    public VendorProductResponseDto save(VendorProductRequestDto vendorProduct) {
+    public VendorProductResponseDto save(VendorProductRequestDto vendorProductRequestDto) {
 
-        Product product=productService.save(vendorProduct.getProduct());
-        vendorProduct.setProduct(product);
-        VendorProduct vendorProductsaved=modelMapper.map(vendorProduct,VendorProduct.class);
+        Product product=productService.save(vendorProductRequestDto.getProduct());
+        System.out.println(" product saved"+product.getProductName());
+        log.info("product saved",product.getProductName());
 
-        return modelMapper.map(vendorProductDao.save(vendorProductsaved),VendorProductResponseDto.class);
+        Vendor vendor=vendorDao.findVendorByEmail(vendorProductRequestDto.getVendor().getEmail()).orElseThrow(()->
+                new VendorProductNotFound("Vendor not found in vendorProductManager"));
 
-
-        /*
-        Category category=categoryService.findById(vendorProduct.getCategoryId());
-        Vendor  vendor=vendorDao.findById(vendorProduct.getVendorId()).get();
-
-
-        Product product=new Product();
-        product.setProductName(vendorProduct.getProductName());
-        product.setProductPhoto(vendorProduct.getProductPhoto());
-        product.setCategory(category);
-        product.setProductPhoto(vendorProduct.getProductPhoto());
-        product.setState(true);
-        product.setUnitInStock(vendorProduct.getUnitInStock());
-        product.setUnitPrice(vendorProduct.getUnitPrice());
-
-
+        VendorProduct vendorProductsaved=modelMapper.map(vendorProductRequestDto,VendorProduct.class);
         vendorProductsaved.setVendor(vendor);
         vendorProductsaved.setProduct(product);
+        log.info("vendorProductRequestDto ",vendorProductsaved.getProduct().getProductName());
+        VendorProduct vendorProduct1=vendorProductDao.save(vendorProductsaved);
+        System.out.println(vendorProduct1.getProduct().getProductName());
+        log.error("vendorProductRequestDto saved",vendorProduct1);
 
-        vendorProductsaved=vendorProductDao.save(vendorProductsaved);
-        product.setVendorProduct(vendorProductsaved);
+        VendorProductResponseDto vendorProductResponseDto=modelMapper.map(vendorProduct1,VendorProductResponseDto.class);
 
+        return modelMapper.map(vendorProduct1,VendorProductResponseDto.class);
+    }
 
-         */
+    @Override
+    public List<VendorProductResponseDto> getVendorProductsByVendorId(int vendorId) {
 
+        Vendor vendor=vendorDao.findById(vendorId).orElseThrow(()-> new VendorProductNotFound("Vendor not found"));
+        List<VendorProduct> vendorProducts=vendorProductDao.findVendorProductsByVendorId(vendorId);
 
+        return vendorProducts.stream().map(vendorProduct -> modelMapper.map(vendorProduct,VendorProductResponseDto.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<VendorProductResponseDto> getVendorProductsByCategoryId(int categoryId) {
+
+        List<VendorProduct> vendorProducts=vendorProductDao.findVendorProductsByProduct_Category_Id(categoryId);
+        return vendorProducts.stream().map(vendorProduct -> modelMapper.map(vendorProduct,VendorProductResponseDto.class)).collect(Collectors.toList());
     }
 }

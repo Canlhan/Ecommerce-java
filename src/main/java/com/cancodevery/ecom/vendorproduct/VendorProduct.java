@@ -32,7 +32,7 @@ public class VendorProduct
     @Column(name = "description")
      private String description;
 
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name = "vendor_id")
      private Vendor vendor;
 

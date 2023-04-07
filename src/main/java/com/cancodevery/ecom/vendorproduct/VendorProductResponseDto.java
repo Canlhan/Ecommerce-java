@@ -1,5 +1,6 @@
 package com.cancodevery.ecom.vendorproduct;
 
+import com.cancodevery.ecom.category.Category;
 import com.cancodevery.ecom.product.Product;
 import com.cancodevery.ecom.vendor.Vendor;
 import lombok.AllArgsConstructor;
@@ -31,4 +32,5 @@ public class VendorProductResponseDto
 
 
     private Product product;
+
 }

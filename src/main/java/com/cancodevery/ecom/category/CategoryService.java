@@ -9,4 +9,5 @@ public interface CategoryService
     Category findById(int id);
 
     Category save(Category category);
+    Category findCategoryByCategoryName(String categoryName);
 }
