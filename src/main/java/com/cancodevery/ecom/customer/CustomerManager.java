@@ -61,4 +61,12 @@ public class CustomerManager  implements CustomerService{
         return customerResponseDto;
 
     }
+
+    @Override
+    public CustomerResponseDto getByEmail(String email) {
+
+        Customer customer=customerDao.findByEmail(email);
+        return modelMapper.map(customer,CustomerResponseDto.class);
+
+    }
 }

@@ -40,6 +40,7 @@ public class SecurityConfig
                  .antMatchers("/api/v1/auth/authenticate","/api/v1/customers/register",
                          "/api/v1/vendors/register","/api/v1/categories/**").permitAll()
                  .antMatchers("/api/v1/vendorproducts/{vendorId}","/api/v1/vendors/{email}").hasAuthority(RoleType.ROLE_VENDOR.toString())
+                 .antMatchers("/api/v1/carts/**").hasAuthority(RoleType.ROLE_CUSTOMER.toString())
                  .anyRequest()
                  .authenticated()
                  .and()

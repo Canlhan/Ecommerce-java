@@ -23,9 +23,5 @@ public class CartProductController
     }
 
 
-    @GetMapping("/")
-    public List<CartProduct> getAll(){
 
-        return cartProductService.getAll();
-    }
 }

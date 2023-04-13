@@ -1,10 +1,7 @@
 package com.cancodevery.ecom.customer;
 
 import com.cancodevery.ecom.product.Product;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -16,7 +13,8 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-
+@Builder
+@AllArgsConstructor
 public class Customer implements Serializable {
 
 
