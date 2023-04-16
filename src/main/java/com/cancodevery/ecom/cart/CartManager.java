@@ -52,16 +52,21 @@ public class CartManager implements CartService{
     @Override
     public CartResponseDto getByCustomerId(int customerId) {
         Cart cart = cartDao.findByCustomerId(customerId);
+        if(cart==null){
+            return null;
+        }
         return modelMapper.map(cart, CartResponseDto.class);
     }
 
 
     @Override
     public CartResponseDto save(CartRequestDto cartRequestDto,  int customerId) {
-
+        CartResponseDto   cartResponseDto =getByCustomerId(customerId);
+        if(cartResponseDto!=null){
+            return cartResponseDto;
+        }
         CustomerResponseDto customer = customerService.get(customerId);
         Customer customer1 = modelMapper.map(customer, Customer.class);
-
 
         Cart cart = Cart.builder()
                 .customer(customer1)

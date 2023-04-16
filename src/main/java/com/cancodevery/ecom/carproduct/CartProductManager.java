@@ -4,27 +4,30 @@ import com.cancodevery.ecom.Exception.CartNotFound;
 import com.cancodevery.ecom.cart.Cart;
 import com.cancodevery.ecom.cart.CartDao;
 import com.cancodevery.ecom.cart.CartResponseDto;
+import com.cancodevery.ecom.cart.CartService;
+import com.cancodevery.ecom.vendorproduct.VendorProduct;
+import com.cancodevery.ecom.vendorproduct.VendorProductResponseDto;
+import com.cancodevery.ecom.vendorproduct.VendorProductService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class CartProductManager implements  CartProductService{
 
-    private CartProductDao cartProductDao;
-    private ModelMapper modelMapper;
+    private final CartProductDao cartProductDao;
+    private final ModelMapper modelMapper;
 
+    private final CartService   cartService;
 
-    @Autowired
-    public CartProductManager(CartProductDao cartProductDao) {
-        this.cartProductDao = cartProductDao;
+    private final VendorProductService  vendorProductService;
 
-    }
 
     @Override
     public List<CartProductResponseDto> getAll() {
@@ -48,7 +51,16 @@ public class CartProductManager implements  CartProductService{
     public CartProductResponseDto save(CartProductRequestDto cartProduct) {
 
         CartProductResponseDto cartProductResponseDto = modelMapper.map(cartProduct, CartProductResponseDto.class);
+        CartResponseDto cart = cartService.get(cartProduct.getCart().getId());
+        VendorProductResponseDto vendorProductResponseDto = vendorProductService.get(cartProduct.getVendorProduct().getId());
+        VendorProduct   vendorProduct = modelMapper.map(vendorProductResponseDto, VendorProduct.class);
+
+        Cart cart1 = modelMapper.map(cart, Cart.class);
+
         CartProduct  cartProduct1 = modelMapper.map(cartProductResponseDto, CartProduct.class);
+        cartProduct1.getCart().add(cart1);
+        cartProduct1.setVendorProduct(vendorProduct);
+
         cartProductDao.save(cartProduct1);
         return cartProductResponseDto;
     }

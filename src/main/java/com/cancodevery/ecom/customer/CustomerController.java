@@ -30,5 +30,11 @@ public class CustomerController {
         return customerService.register(customer);
     }
 
+    @GetMapping("/getemail")
+    public CustomerResponseDto getCustomer(@RequestParam("email") String email){
+
+        return customerService.getByEmail(email);
+    }
+
 
 }

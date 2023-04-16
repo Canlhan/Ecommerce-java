@@ -37,11 +37,11 @@ public class CartController
     }
 
     @PostMapping("/add")
-    public ResponseEntity<CartResponseDto> add(@RequestBody CartRequestDto customer,@RequestParam int customerId){
+    public ResponseEntity<CartResponseDto> add(@RequestParam("customerId") int customerId,@RequestBody CartRequestDto cartRequestDto){
 
-        log.info("{cart controllerda }",customer);
+        log.info("{cart controllerda }",cartRequestDto);
 
-        return ResponseEntity.ok(cartService.save(customer,customerId));
+        return ResponseEntity.ok(cartService.save(cartRequestDto,54));
     }
     @PostMapping("/addproduct/{cartId}")
     public ResponseEntity<CartResponseDto> addProduct(@RequestBody CartProductRequestDto cartProductRequestDto,int cartId){

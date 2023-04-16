@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -18,8 +19,8 @@ public class CartResponseDto
 {
 
 
-
+    int id;
     Customer customer;
 
-    List<CartProduct> cartProducts=new ArrayList<>();
+    Set<CartProduct> cartProducts;
 }

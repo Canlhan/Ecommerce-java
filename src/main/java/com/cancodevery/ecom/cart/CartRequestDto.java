@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -22,6 +23,6 @@ public class CartRequestDto
 
 
 
-    List<CartProduct> cartProducts=new ArrayList<>();
+     Set<CartProduct> cartProducts;
 
 }
