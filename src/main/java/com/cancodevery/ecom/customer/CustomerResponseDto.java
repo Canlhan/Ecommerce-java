@@ -19,5 +19,6 @@ public class CustomerResponseDto
     private String lastName;
     private Date dob;
     private String token;
+    private String email;
     private String contact;
 }

@@ -6,12 +6,12 @@ import java.util.List;
 
 public interface CartProductService
 {
-    List<CartProduct> getAll();
+    List<CartProductResponseDto> getAll();
 
-    CartProduct get(int id);
+    CartProductResponseDto get(int id);
 
 
 
-    CartProduct save(CartProduct cartProduct);
+    CartProductResponseDto save(CartProductRequestDto cartProduct);
 
 }

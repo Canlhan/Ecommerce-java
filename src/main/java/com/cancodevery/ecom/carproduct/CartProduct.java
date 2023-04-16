@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -25,12 +27,11 @@ public class CartProduct
     @Column(name = "Quantity")
     int quantity;
 
-    @ManyToOne()
-    @JoinColumn(name = "cart_id")
-    Cart cart;
+    @ManyToMany( mappedBy = "cartProducts")
+    Set<Cart> cart= new HashSet<>();
 
     @OneToOne()
-            @JoinColumn(name = "vendorproduct_id")
+    @JoinColumn(name = "vendorproduct_id")
     VendorProduct vendorProduct;
 
 

@@ -12,4 +12,5 @@ public interface CustomerService {
 
 
     CustomerResponseDto register(CustomerRequestDto customer);
+    CustomerResponseDto getByEmail(String email);
 }
