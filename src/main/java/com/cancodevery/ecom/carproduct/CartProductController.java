@@ -1,22 +1,28 @@
 package com.cancodevery.ecom.carproduct;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/cartproducts")
+@RequestMapping("/api/v1/cartproducts")
+@RequiredArgsConstructor
 public class CartProductController
 {
 
-    private CartProductService cartProductService;
+    private final CartProductService cartProductService;
 
 
-    @Autowired
-    public CartProductController(CartProductService cartProductService) {
-        this.cartProductService = cartProductService;
+
+    @GetMapping("/")
+    public ResponseEntity<List<CartProductResponseDto>> getAllCartProducts()
+    {
+        return ResponseEntity.ok(cartProductService.getAll());
     }
 
     @PostMapping("/")

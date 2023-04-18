@@ -12,6 +12,6 @@ public interface CartProductService
 
 
 
-    CartProductResponseDto save(CartProductRequestDto cartProduct);
+    List<CartProductResponseDto> save(CartProductRequestDto cartProduct);
 
 }

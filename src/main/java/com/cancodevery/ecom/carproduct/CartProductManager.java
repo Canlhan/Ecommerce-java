@@ -13,6 +13,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -26,6 +28,7 @@ public class CartProductManager implements  CartProductService{
 
     private final CartService   cartService;
 
+    private final CartDao cartDao;
     private final VendorProductService  vendorProductService;
 
 
@@ -48,20 +51,47 @@ public class CartProductManager implements  CartProductService{
 
 
     @Override
-    public CartProductResponseDto save(CartProductRequestDto cartProduct) {
+    public List<CartProductResponseDto> save(CartProductRequestDto cartProductRequestDto) {
 
-        CartProductResponseDto cartProductResponseDto = modelMapper.map(cartProduct, CartProductResponseDto.class);
-        CartResponseDto cart = cartService.get(cartProduct.getCart().getId());
-        VendorProductResponseDto vendorProductResponseDto = vendorProductService.get(cartProduct.getVendorProduct().getId());
-        VendorProduct   vendorProduct = modelMapper.map(vendorProductResponseDto, VendorProduct.class);
 
-        Cart cart1 = modelMapper.map(cart, Cart.class);
+        Cart cart =cartDao.findById(cartProductRequestDto.getCartId()).orElseThrow(()->new CartNotFound("Cart not found"));
 
-        CartProduct  cartProduct1 = modelMapper.map(cartProductResponseDto, CartProduct.class);
-        cartProduct1.getCart().add(cart1);
-        cartProduct1.setVendorProduct(vendorProduct);
+        List<CartProduct> cartProducts= saveAll(cartProductRequestDto.getVendorProducts(),cart);
 
-        cartProductDao.save(cartProduct1);
-        return cartProductResponseDto;
+
+        return cartProducts.stream().map(cartProduct -> modelMapper.map(cartProduct, CartProductResponseDto.class)).collect(Collectors.toList());
+    }
+
+    private  List<CartProduct> saveAll(Set<VendorProduct> vendorProducts, Cart cart)
+    {
+
+        List<CartProduct> carProducts= vendorProducts.stream().map(vendorProduct -> {
+            CartProduct cartProduct = new CartProduct();
+            VendorProductResponseDto vendorProductResponseDto = vendorProductService.get(vendorProduct.getId());
+            VendorProduct   vendorProductOfCartProduct = modelMapper.map(vendorProductResponseDto, VendorProduct.class);
+            cartProduct.getCart().add(cart);
+            cartProduct.setVendorProduct(vendorProductOfCartProduct);
+            cartProduct.setQuantity(vendorProduct.getQuantity());
+            cart.getCartProducts().add(cartProduct);
+
+            return cartProduct;
+        }).collect(Collectors.toList());
+
+        return cartProductDao.saveAll(carProducts);
+
+
+
+
+
+        //        vendorProducts.forEach(vendorProduct -> {
+//            CartProduct cartProduct = new CartProduct();
+//            VendorProductResponseDto vendorProductResponseDto = vendorProductService.get(vendorProduct.getId());
+//            VendorProduct   vendorProductOfCartProduct = modelMapper.map(vendorProductResponseDto, VendorProduct.class);
+//            cartProduct.getCart().add(cart);
+//            cartProduct.setVendorProduct(vendorProductOfCartProduct);
+//            cartProduct.setQuantity(vendorProduct.getQuantity());
+//            cart.getCartProducts().add(cartProduct);
+//            cartProductDao.save(cartProduct);
+//        });
     }
 }
