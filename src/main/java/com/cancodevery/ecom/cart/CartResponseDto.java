@@ -7,6 +7,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -23,4 +24,5 @@ public class CartResponseDto
     Customer customer;
 
     Set<CartProduct> cartProducts;
+    LocalDate dateCreated;
 }

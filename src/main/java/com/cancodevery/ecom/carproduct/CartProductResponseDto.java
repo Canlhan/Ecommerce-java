@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -24,5 +25,5 @@ public class CartProductResponseDto
 
     Cart cart;
 
-    VendorProduct vendorProduct;
+    Set<VendorProduct> vendorProduct;
 }

@@ -4,9 +4,7 @@ import com.cancodevery.ecom.cart.Cart;
 import com.cancodevery.ecom.vendorproduct.VendorProduct;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -16,6 +14,8 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
+@Builder
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
 public class CartProduct
 {
@@ -30,7 +30,7 @@ public class CartProduct
     @ManyToMany( mappedBy = "cartProducts")
     Set<Cart> cart= new HashSet<>();
 
-    @OneToOne()
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "vendorproduct_id")
     VendorProduct vendorProduct;
 

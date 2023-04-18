@@ -23,19 +23,21 @@ public class Cart
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cart_id")
     int id;
 
     @Column(name = "DateCreated")
     LocalDate dateCreated;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id")
     Customer customer;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "cart_products",
+    @JoinTable(name = "cart_cartproducts",
             joinColumns = @JoinColumn(name = "cart_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id"))
+            inverseJoinColumns = @JoinColumn(name = "cartproduct_id"))
     private Set<CartProduct> cartProducts = new HashSet<>();
+
+
+
 }
