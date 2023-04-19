@@ -9,7 +9,7 @@ public interface OrderService
 
     OrderResponse get(int id);
 
-    OrderResponse save(OrderRequest orderRequest, int customerId);
+    OrderResponse save(OrderRequest orderRequest);
 
     OrderResponse update(OrderRequest orderRequest, int id);
 

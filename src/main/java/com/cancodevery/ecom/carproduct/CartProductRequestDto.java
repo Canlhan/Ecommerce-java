@@ -14,6 +14,6 @@ public class CartProductRequestDto
 
    private int quantity;
     private  int cartId;
-    private Set<VendorProduct> vendorProducts;
+    private List<VendorProduct> vendorProducts;
 
 }
