@@ -10,8 +10,6 @@ public class OrderProductResponseDto
 
     int id;
     int quantity;
-    Order order;
-
     VendorProduct vendorProduct;
 
 }

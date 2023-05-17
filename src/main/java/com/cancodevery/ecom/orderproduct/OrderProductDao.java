@@ -5,10 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface OrderProductDao extends JpaRepository<OrderProduct,Integer>
 {
 
-        List<Order> findAllByVendorId(int vendorId);
+        List<OrderProduct> findOrderProductsByVendorProduct_Vendor_Id(int vendorId);
 }

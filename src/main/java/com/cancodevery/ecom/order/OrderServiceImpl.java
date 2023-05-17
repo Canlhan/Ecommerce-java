@@ -5,15 +5,15 @@ import com.cancodevery.ecom.Exception.OrderNotFound;
 import com.cancodevery.ecom.customer.Customer;
 import com.cancodevery.ecom.customer.CustomerResponseDto;
 import com.cancodevery.ecom.customer.CustomerService;
-import com.cancodevery.ecom.vendorproduct.VendorProduct;
-import com.cancodevery.ecom.vendorproduct.VendorProductResponseDto;
+import com.cancodevery.ecom.orderproduct.*;
 import com.cancodevery.ecom.vendorproduct.VendorProductService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,6 +26,8 @@ public class OrderServiceImpl implements OrderService
 
     private final VendorProductService vendorProductService;
     private  final CustomerService customerService;
+
+    private final OrderProductService   orderProductService;
 
     @Override
     public List<OrderResponse> getAll() {
@@ -49,6 +51,9 @@ public class OrderServiceImpl implements OrderService
         CustomerResponseDto customerResponseDto = customerService.get(orderRequest.getCustomerId());
         Customer customer = modelMapper.map(customerResponseDto, Customer.class);
         order.setCustomer(customer);
+        addOrderProductsToOrder(order,orderRequest.getOrderProducts());
+        order.setDateCreated(LocalDate.now());
+        order.setIsConfirmed(false);
         orderDao.save(order);
 
         return modelMapper.map(order, OrderResponse.class);
@@ -61,6 +66,17 @@ public class OrderServiceImpl implements OrderService
 
     @Override
     public void delete(int id) {
+
+    }
+
+    private void addOrderProductsToOrder(Order order, List<OrderProductRequestDto> orderProductIds){
+
+        orderProductIds.stream().forEach(orderProduct->{
+            OrderProductResponseDto     orderProductResponse= orderProductService.save(orderProduct);
+
+            OrderProduct orderProduct1 = modelMapper.map(orderProductResponse, OrderProduct.class);
+            order.getOrderProducts().add(orderProduct1);
+        });
 
     }
 }
