@@ -83,4 +83,11 @@ public class VendorProductManager implements VendorProductService{
         List<VendorProduct> vendorProducts=vendorProductDao.findVendorProductsByProduct_Category_Id(categoryId);
         return vendorProducts.stream().map(vendorProduct -> modelMapper.map(vendorProduct,VendorProductResponseDto.class)).collect(Collectors.toList());
     }
+
+    @Override
+    public void update(VendorProductResponseDto vendorProduct, int id) {
+        VendorProduct vendorProduct1=vendorProductDao.findById(id).orElseThrow(()-> new VendorProductNotFound("VendorProduct not found"));
+        vendorProduct1.setQuantity(vendorProduct.getQuantity());
+        vendorProductDao.save(vendorProduct1);
+    }
 }

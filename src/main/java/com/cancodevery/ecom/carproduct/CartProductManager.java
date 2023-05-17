@@ -62,7 +62,7 @@ public class CartProductManager implements  CartProductService{
         return cartProducts.stream().map(cartProduct -> modelMapper.map(cartProduct, CartProductResponseDto.class)).collect(Collectors.toList());
     }
 
-    private  List<CartProduct> saveAll(Set<VendorProduct> vendorProducts, Cart cart)
+    private  List<CartProduct> saveAll(List<VendorProduct> vendorProducts, Cart cart)
     {
 
         List<CartProduct> carProducts= vendorProducts.stream().map(vendorProduct -> {
