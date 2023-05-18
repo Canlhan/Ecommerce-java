@@ -15,4 +15,6 @@ public class OrderRequest
     private int customerId;
     private List<OrderProductRequestDto> orderProducts;
 
+    private List<Integer> vendorIds;
+
 }

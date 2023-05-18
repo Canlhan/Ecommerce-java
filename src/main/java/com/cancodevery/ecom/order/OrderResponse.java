@@ -3,6 +3,7 @@ package com.cancodevery.ecom.order;
 
 import com.cancodevery.ecom.customer.Customer;
 import com.cancodevery.ecom.orderproduct.OrderProduct;
+import com.cancodevery.ecom.vendor.Vendor;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -17,11 +18,13 @@ public class OrderResponse
 
 
 
+    private int id;
     private Customer customer;
 
 
     private LocalDate dateCreated;
 
+    private  Set<Vendor> vendors;
 
     private Boolean isConfirmed;
 

@@ -64,4 +64,12 @@ public class VendorManager implements VendorService{
 
         return modelMapper.map(vendor,VendorResponseDto.class);
     }
+
+    @Override
+    public VendorResponseDto update(VendorRequestDto VendorRequest) {
+
+        Vendor vendor=modelMapper.map(VendorRequest,Vendor.class);
+
+        return modelMapper.map(vendorDao.save(vendor),VendorResponseDto.class);
+    }
 }

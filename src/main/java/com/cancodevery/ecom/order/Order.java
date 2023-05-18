@@ -3,6 +3,7 @@ package com.cancodevery.ecom.order;
 
 import com.cancodevery.ecom.customer.Customer;
 import com.cancodevery.ecom.orderproduct.OrderProduct;
+import com.cancodevery.ecom.vendor.Vendor;
 import com.cancodevery.ecom.vendorproduct.VendorProduct;
 import lombok.Data;
 
@@ -29,6 +30,13 @@ public class Order
 
     @Column(name = "isConfirmed")
     private Boolean isConfirmed;
+
+
+   @ManyToMany
+    @JoinTable(name = "order_vendor_products",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "vendorproduct_id"))
+    private Set<Vendor> vendors=new HashSet<>();
 
 
     @OneToMany(fetch = FetchType.LAZY)

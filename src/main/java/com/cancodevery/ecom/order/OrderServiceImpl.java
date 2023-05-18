@@ -6,6 +6,9 @@ import com.cancodevery.ecom.customer.Customer;
 import com.cancodevery.ecom.customer.CustomerResponseDto;
 import com.cancodevery.ecom.customer.CustomerService;
 import com.cancodevery.ecom.orderproduct.*;
+import com.cancodevery.ecom.vendor.Vendor;
+import com.cancodevery.ecom.vendor.VendorResponseDto;
+import com.cancodevery.ecom.vendor.VendorService;
 import com.cancodevery.ecom.vendorproduct.VendorProductService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -24,10 +27,11 @@ public class OrderServiceImpl implements OrderService
     private final OrderDao orderDao;
     private final ModelMapper modelMapper;
 
-    private final VendorProductService vendorProductService;
+    private final VendorService vendorService;
     private  final CustomerService customerService;
 
     private final OrderProductService   orderProductService;
+
 
     @Override
     public List<OrderResponse> getAll() {
@@ -42,6 +46,11 @@ public class OrderServiceImpl implements OrderService
     public OrderResponse get(int id) {
 
         Order order = orderDao.findById(id).orElseThrow(()->new OrderNotFound("Order not found"));
+       Set<OrderProduct> orderProductsByVendorId= order.getOrderProducts().stream().filter(orderProduct -> orderProduct.getVendorProduct().getVendor().getId()==id)
+                .collect(Collectors.toSet());
+       order.setOrderProducts(orderProductsByVendorId);
+
+
         return modelMapper.map(order, OrderResponse.class);
     }
 
@@ -54,7 +63,10 @@ public class OrderServiceImpl implements OrderService
         addOrderProductsToOrder(order,orderRequest.getOrderProducts());
         order.setDateCreated(LocalDate.now());
         order.setIsConfirmed(false);
-        orderDao.save(order);
+        addOrderToVendors(order,orderRequest.getVendorIds());
+        Order addOrder =orderDao.save(order);
+
+
 
         return modelMapper.map(order, OrderResponse.class);
     }
@@ -69,6 +81,15 @@ public class OrderServiceImpl implements OrderService
 
     }
 
+    @Override
+    public List<OrderResponse> getOrdersByVendorId(int vendorId) {
+
+
+
+
+        return null;
+    }
+
     private void addOrderProductsToOrder(Order order, List<OrderProductRequestDto> orderProductIds){
 
         orderProductIds.stream().forEach(orderProduct->{
@@ -78,5 +99,18 @@ public class OrderServiceImpl implements OrderService
             order.getOrderProducts().add(orderProduct1);
         });
 
+    }
+
+    private void addOrderToVendors(Order order, List<Integer> vendorIds){
+        vendorIds.stream().forEach(vendorId->{
+            VendorResponseDto vendorResponseDto = vendorService.get(vendorId);
+            Vendor vendor = modelMapper.map(vendorResponseDto, Vendor.class);
+            order.getVendors().add(vendor);
+            vendor.getOrders().add(order);
+
+
+
+
+        });
     }
 }
