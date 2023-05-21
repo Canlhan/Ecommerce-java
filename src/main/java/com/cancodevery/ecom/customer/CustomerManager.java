@@ -1,5 +1,6 @@
 package com.cancodevery.ecom.customer;
 
+import com.cancodevery.ecom.Exception.CustomerNotFound;
 import com.cancodevery.ecom.role.RoleType;
 import com.cancodevery.ecom.auth.AuthService;
 import com.cancodevery.ecom.auth.AuthenticationResponse;
@@ -39,7 +40,7 @@ public class CustomerManager  implements CustomerService{
 
     @Override
     public CustomerResponseDto get(int id) {
-        Customer customer=customerDao.findById(id).get();
+        Customer customer=customerDao.findById(id).orElseThrow(()->new CustomerNotFound("Customer not found"));
         return modelMapper.map(customer,CustomerResponseDto.class);
     }
 

@@ -85,9 +85,10 @@ public class VendorProductManager implements VendorProductService{
     }
 
     @Override
-    public void update(VendorProductResponseDto vendorProduct, int id) {
+    public VendorProductResponseDto update(VendorProductRequestDto vendorProduct, int id) {
         VendorProduct vendorProduct1=vendorProductDao.findById(id).orElseThrow(()-> new VendorProductNotFound("VendorProduct not found"));
         vendorProduct1.setQuantity(vendorProduct.getQuantity());
         vendorProductDao.save(vendorProduct1);
+        return modelMapper.map(vendorProduct1,VendorProductResponseDto.class);
     }
 }

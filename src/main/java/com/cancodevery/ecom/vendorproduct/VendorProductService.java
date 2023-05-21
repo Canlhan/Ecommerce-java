@@ -17,5 +17,7 @@ public interface VendorProductService
 
     List<VendorProductResponseDto> getVendorProductsByCategoryId(int categoryId);
 
-    void update(VendorProductResponseDto vendorProduct, int id);
+    VendorProductResponseDto update(VendorProductRequestDto vendorProduct, int id);
+
+
 }

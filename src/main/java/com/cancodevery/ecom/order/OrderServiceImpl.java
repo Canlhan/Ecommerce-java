@@ -9,6 +9,8 @@ import com.cancodevery.ecom.orderproduct.*;
 import com.cancodevery.ecom.vendor.Vendor;
 import com.cancodevery.ecom.vendor.VendorResponseDto;
 import com.cancodevery.ecom.vendor.VendorService;
+import com.cancodevery.ecom.vendorproduct.VendorProduct;
+import com.cancodevery.ecom.vendorproduct.VendorProductRequestDto;
 import com.cancodevery.ecom.vendorproduct.VendorProductService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -32,6 +34,8 @@ public class OrderServiceImpl implements OrderService
 
     private final OrderProductService   orderProductService;
 
+    private final VendorProductService vendorProductService;
+
 
     @Override
     public List<OrderResponse> getAll() {
@@ -46,7 +50,7 @@ public class OrderServiceImpl implements OrderService
     public OrderResponse get(int id) {
 
         Order order = orderDao.findById(id).orElseThrow(()->new OrderNotFound("Order not found"));
-       Set<OrderProduct> orderProductsByVendorId= order.getOrderProducts().stream().filter(orderProduct -> orderProduct.getVendorProduct().getVendor().getId()==id)
+       Set<OrderProduct> orderProductsByVendorId= order.getOrderProducts().stream().filter(orderProduct -> orderProduct.getCartProduct().getVendorProduct().getVendor().getId()==id)
                 .collect(Collectors.toSet());
        order.setOrderProducts(orderProductsByVendorId);
 
@@ -64,7 +68,7 @@ public class OrderServiceImpl implements OrderService
         order.setDateCreated(LocalDate.now());
         order.setIsConfirmed(false);
         addOrderToVendors(order,orderRequest.getVendorIds());
-        Order addOrder =orderDao.save(order);
+        orderDao.save(order);
 
 
 
@@ -94,22 +98,29 @@ public class OrderServiceImpl implements OrderService
 
         orderProductIds.stream().forEach(orderProduct->{
             OrderProductResponseDto     orderProductResponse= orderProductService.save(orderProduct);
-
+            decreaseTheStock(orderProductResponse);
             OrderProduct orderProduct1 = modelMapper.map(orderProductResponse, OrderProduct.class);
             order.getOrderProducts().add(orderProduct1);
         });
 
     }
 
+    private void decreaseTheStock(OrderProductResponseDto orderProductResponseDto){
+        int quantity = orderProductResponseDto.getQuantity();
+        VendorProduct vendorProduct = orderProductResponseDto.getCartProduct().getVendorProduct();
+        int stock = vendorProduct.getQuantity();
+        VendorProductRequestDto vendorProductRequestDto = modelMapper.map(vendorProduct, VendorProductRequestDto.class);
+        vendorProductRequestDto.setQuantity(stock-quantity);
+        vendorProductService.update(vendorProductRequestDto,vendorProduct.getId());
+
+
+    }
     private void addOrderToVendors(Order order, List<Integer> vendorIds){
         vendorIds.stream().forEach(vendorId->{
             VendorResponseDto vendorResponseDto = vendorService.get(vendorId);
             Vendor vendor = modelMapper.map(vendorResponseDto, Vendor.class);
             order.getVendors().add(vendor);
             vendor.getOrders().add(order);
-
-
-
 
         });
     }

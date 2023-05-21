@@ -41,7 +41,7 @@ public class CartController
 
         log.info("{cart controllerda }",cartRequestDto);
 
-        return ResponseEntity.ok(cartService.save(cartRequestDto,54));
+        return ResponseEntity.ok(cartService.save(cartRequestDto,customerId));
     }
     @PostMapping("/addproduct/{cartId}")
     public ResponseEntity<CartResponseDto> addProduct(@RequestBody CartProductRequestDto cartProductRequestDto,int cartId){

@@ -1,5 +1,6 @@
 package com.cancodevery.ecom.orderproduct;
 
+import com.cancodevery.ecom.carproduct.CartProduct;
 import com.cancodevery.ecom.order.Order;
 import com.cancodevery.ecom.vendorproduct.VendorProduct;
 import lombok.Data;
@@ -10,6 +11,6 @@ public class OrderProductResponseDto
 
     int id;
     int quantity;
-    VendorProduct vendorProduct;
+    CartProduct cartProduct;
 
 }

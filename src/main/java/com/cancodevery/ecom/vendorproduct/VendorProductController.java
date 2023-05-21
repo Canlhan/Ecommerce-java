@@ -32,6 +32,18 @@ public class VendorProductController
 
     }
 
+    @GetMapping("/product/{id}")
+    public ResponseEntity<VendorProductResponseDto> getVendorProductById(@PathVariable int id) {
+        try {
+            VendorProductResponseDto vendorProductResponseDto = vendorProductService.get(id);
+            return ResponseEntity.ok(vendorProductResponseDto);
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
+    }
+
     @PostMapping("/")
     public ResponseEntity<VendorProductResponseDto> add(@RequestBody VendorProductRequestDto vendorProductRequestDto){
         try {

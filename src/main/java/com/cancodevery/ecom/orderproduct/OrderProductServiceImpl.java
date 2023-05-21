@@ -1,6 +1,9 @@
 package com.cancodevery.ecom.orderproduct;
 
 import com.cancodevery.ecom.Exception.OrderProductNotFound;
+import com.cancodevery.ecom.carproduct.CartProduct;
+import com.cancodevery.ecom.carproduct.CartProductResponseDto;
+import com.cancodevery.ecom.carproduct.CartProductService;
 import com.cancodevery.ecom.order.Order;
 import com.cancodevery.ecom.order.OrderDao;
 import com.cancodevery.ecom.vendorproduct.VendorProduct;
@@ -27,13 +30,13 @@ public class OrderProductServiceImpl  implements OrderProductService{
     private final OrderProductDao orderProductDao;
     private final ModelMapper modelMapper;
 
-    private final VendorProductService vendorProductService;
+    private final CartProductService cartProductService;
 
 
     @Override
     public List<OrderProductResponseDto> getAllByVendorId(int vendorId) {
 
-        List<OrderProduct> orderProduct = orderProductDao.findOrderProductsByVendorProduct_Vendor_Id(vendorId);
+        List<OrderProduct> orderProduct = orderProductDao.findOrderProductsByCartProduct_VendorProduct_Vendor_Id(vendorId);
         return orderProduct.stream().map(orderProdc->
                 modelMapper.map(orderProdc,OrderProductResponseDto.class)
 
@@ -58,11 +61,11 @@ public class OrderProductServiceImpl  implements OrderProductService{
         OrderProduct orderProduct = modelMapper.map(orderProductRequest,OrderProduct.class);
 
 
-        VendorProductResponseDto vendorProduct = vendorProductService.get(orderProductRequest.getVendorProductId());
-        vendorProduct.setQuantity(vendorProduct.getQuantity()-orderProductRequest.getQuantity());
-        vendorProductService.update(vendorProduct,vendorProduct.getId());
+        CartProductResponseDto cartProductResponseDto = cartProductService.get(orderProductRequest.getCartProductId());
+        //vendorProduct.setQuantity(vendorProduct.getQuantity()-orderProductRequest.getQuantity());
+       // vendorProductService.update(vendorProduct,vendorProduct.getId());
 
-        orderProduct.setVendorProduct(modelMapper.map(vendorProduct,VendorProduct.class));
+        orderProduct.setCartProduct(modelMapper.map(cartProductResponseDto, CartProduct.class));
 
         OrderProduct addedOrderProduct= orderProductDao.save(orderProduct);
 

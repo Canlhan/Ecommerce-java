@@ -3,6 +3,7 @@ package com.cancodevery.ecom.vendor;
 import com.cancodevery.ecom.order.Order;
 import com.cancodevery.ecom.vendorproduct.VendorProduct;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,6 +40,7 @@ public class Vendor
     String contact;
 
     @ManyToMany(mappedBy = "vendors",cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<Order> orders=new HashSet<>();
 
     @OneToMany(mappedBy = "vendor",cascade = CascadeType.ALL)

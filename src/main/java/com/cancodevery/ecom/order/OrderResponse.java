@@ -24,7 +24,7 @@ public class OrderResponse
 
     private LocalDate dateCreated;
 
-    private  Set<Vendor> vendors;
+
 
     private Boolean isConfirmed;
 

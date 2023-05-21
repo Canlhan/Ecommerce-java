@@ -2,6 +2,7 @@ package com.cancodevery.ecom.vendor;
 
 import com.cancodevery.ecom.order.Order;
 import com.cancodevery.ecom.vendorproduct.VendorProduct;
+import com.cancodevery.ecom.vendorproduct.VendorProductResponseDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

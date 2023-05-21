@@ -5,6 +5,8 @@ import com.cancodevery.ecom.customer.Customer;
 import com.cancodevery.ecom.orderproduct.OrderProduct;
 import com.cancodevery.ecom.vendor.Vendor;
 import com.cancodevery.ecom.vendorproduct.VendorProduct;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -15,6 +17,7 @@ import java.util.Set;
 @Entity
 @Table(name = "orders")
 @Data
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
 public class Order
 {
     @Id
@@ -32,14 +35,14 @@ public class Order
     private Boolean isConfirmed;
 
 
-   @ManyToMany
-    @JoinTable(name = "order_vendor_products",
+   @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    @JoinTable(name = "order_vendor",
             joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "vendorproduct_id"))
+            inverseJoinColumns = @JoinColumn(name = "vendor_id"))
     private Set<Vendor> vendors=new HashSet<>();
 
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<OrderProduct> orderProducts=new HashSet<>();
 
 

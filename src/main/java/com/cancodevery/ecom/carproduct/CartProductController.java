@@ -26,9 +26,14 @@ public class CartProductController
     }
 
     @PostMapping("/")
-    public void addCartProduct(@RequestBody CartProductRequestDto cartProductRequestDto)
+    public ResponseEntity<List<CartProductResponseDto>> addCartProduct(@RequestBody CartProductRequestDto cartProductRequestDto)
     {
-        cartProductService.save(cartProductRequestDto);
+       return  ResponseEntity.ok(cartProductService.save(cartProductRequestDto));
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<CartProductResponseDto> getCartProduct(@PathVariable int id)
+    {
+        return ResponseEntity.ok(cartProductService.get(id));
     }
 
 
