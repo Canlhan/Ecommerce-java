@@ -1,6 +1,7 @@
 package com.cancodevery.ecom.vendor;
 
 import com.cancodevery.ecom.Exception.UserNotFound;
+import com.cancodevery.ecom.order.OrderResponse;
 import com.cancodevery.ecom.role.RoleType;
 import com.cancodevery.ecom.auth.AuthService;
 import com.cancodevery.ecom.auth.AuthenticationResponse;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -61,6 +63,7 @@ public class VendorManager implements VendorService{
     @Override
     public VendorResponseDto get(String email) {
         Vendor vendor=vendorDao.findVendorByEmail(email).orElseThrow(()->new UserNotFound("Vendor not found"));
+
 
         return modelMapper.map(vendor,VendorResponseDto.class);
     }

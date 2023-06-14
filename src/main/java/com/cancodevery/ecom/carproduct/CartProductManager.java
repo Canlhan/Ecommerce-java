@@ -57,6 +57,8 @@ public class CartProductManager implements  CartProductService{
 
         Cart cart =cartDao.findById(cartProductRequestDto.getCartId()).orElseThrow(()->new CartNotFound("Cart not found"));
 
+
+
         List<CartProduct> cartProducts= saveAll(cartProductRequestDto.getVendorProductsIds(),cart,cartProductRequestDto.getQuantity());
 
 

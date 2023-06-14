@@ -19,7 +19,7 @@ public class OrderProduct
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
     CartProduct cartProduct;
 
     @Column(name = "quantity")

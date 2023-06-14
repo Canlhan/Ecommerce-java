@@ -1,6 +1,7 @@
 package com.cancodevery.ecom.vendor;
 
 import com.cancodevery.ecom.order.Order;
+import com.cancodevery.ecom.order.OrderResponse;
 import com.cancodevery.ecom.vendorproduct.VendorProduct;
 import com.cancodevery.ecom.vendorproduct.VendorProductResponseDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -33,6 +34,6 @@ public class VendorResponseDto
     private String contact;
 
 
-    private Set<Order> orders;
+    private Set<OrderResponse> orders;
      private List<VendorProduct> vendorProducts=new ArrayList<>();
 }

@@ -98,7 +98,7 @@ public class OrderServiceImpl implements OrderService
 
         orderProductIds.stream().forEach(orderProduct->{
             OrderProductResponseDto     orderProductResponse= orderProductService.save(orderProduct);
-            decreaseTheStock(orderProductResponse);
+
             OrderProduct orderProduct1 = modelMapper.map(orderProductResponse, OrderProduct.class);
             order.getOrderProducts().add(orderProduct1);
         });
@@ -107,11 +107,11 @@ public class OrderServiceImpl implements OrderService
 
     private void decreaseTheStock(OrderProductResponseDto orderProductResponseDto){
         int quantity = orderProductResponseDto.getQuantity();
-        VendorProduct vendorProduct = orderProductResponseDto.getCartProduct().getVendorProduct();
+      /* VendorProduct vendorProduct = orderProductResponseDto.getCartProduct().getVendorProduct();
         int stock = vendorProduct.getQuantity();
         VendorProductRequestDto vendorProductRequestDto = modelMapper.map(vendorProduct, VendorProductRequestDto.class);
         vendorProductRequestDto.setQuantity(stock-quantity);
-        vendorProductService.update(vendorProductRequestDto,vendorProduct.getId());
+        vendorProductService.update(vendorProductRequestDto,vendorProduct.getId());*/
 
 
     }

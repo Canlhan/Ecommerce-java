@@ -30,7 +30,7 @@ public class CartProduct
     @ManyToMany( mappedBy = "cartProducts")
     Set<Cart> cart= new HashSet<>();
 
-    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "vendorproduct_id")
     VendorProduct vendorProduct;
 

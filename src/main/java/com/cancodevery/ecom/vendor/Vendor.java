@@ -39,10 +39,9 @@ public class Vendor
     @Column(name = "contact")
     String contact;
 
-    @ManyToMany(mappedBy = "vendors",cascade = CascadeType.ALL)
-    @JsonIgnore
+    @ManyToMany(mappedBy = "vendors",cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
     private Set<Order> orders=new HashSet<>();
 
-    @OneToMany(mappedBy = "vendor",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "vendor",cascade = CascadeType.REMOVE,fetch = FetchType.EAGER)
     List<VendorProduct> vendorProducts=new ArrayList<>();
 }
