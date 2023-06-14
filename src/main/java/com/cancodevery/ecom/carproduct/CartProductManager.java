@@ -1,6 +1,7 @@
 package com.cancodevery.ecom.carproduct;
 
 import com.cancodevery.ecom.Exception.CartNotFound;
+import com.cancodevery.ecom.Exception.CartProductNotFound;
 import com.cancodevery.ecom.cart.Cart;
 import com.cancodevery.ecom.cart.CartDao;
 import com.cancodevery.ecom.cart.CartResponseDto;
@@ -43,7 +44,7 @@ public class CartProductManager implements  CartProductService{
 
     @Override
     public CartProductResponseDto get(int id) {
-        CartProduct cart = cartProductDao.findById(id).orElseThrow(()->new CartNotFound("Cart not found"));
+        CartProduct cart = cartProductDao.findById(id).orElseThrow(()->new CartProductNotFound("CartProduct not found"));
         CartProductResponseDto cartProductResponseDto = modelMapper.map(cart, CartProductResponseDto.class);
         return cartProductResponseDto;
     }
@@ -56,22 +57,25 @@ public class CartProductManager implements  CartProductService{
 
         Cart cart =cartDao.findById(cartProductRequestDto.getCartId()).orElseThrow(()->new CartNotFound("Cart not found"));
 
-        List<CartProduct> cartProducts= saveAll(cartProductRequestDto.getVendorProducts(),cart);
+
+
+        List<CartProduct> cartProducts= saveAll(cartProductRequestDto.getVendorProductsIds(),cart,cartProductRequestDto.getQuantity());
 
 
         return cartProducts.stream().map(cartProduct -> modelMapper.map(cartProduct, CartProductResponseDto.class)).collect(Collectors.toList());
     }
 
-    private  List<CartProduct> saveAll(List<VendorProduct> vendorProducts, Cart cart)
+    private  List<CartProduct> saveAll(List<Integer> vendorProductsIds, Cart cart,int quantity)
     {
 
-        List<CartProduct> carProducts= vendorProducts.stream().map(vendorProduct -> {
+        List<CartProduct> carProducts= vendorProductsIds.stream().map(vendorProductId -> {
             CartProduct cartProduct = new CartProduct();
-            VendorProductResponseDto vendorProductResponseDto = vendorProductService.get(vendorProduct.getId());
+            VendorProductResponseDto vendorProductResponseDto = vendorProductService.get(vendorProductId);
             VendorProduct   vendorProductOfCartProduct = modelMapper.map(vendorProductResponseDto, VendorProduct.class);
             cartProduct.getCart().add(cart);
             cartProduct.setVendorProduct(vendorProductOfCartProduct);
-            cartProduct.setQuantity(vendorProduct.getQuantity());
+
+            cartProduct.setQuantity(quantity);
             cart.getCartProducts().add(cartProduct);
 
             return cartProduct;

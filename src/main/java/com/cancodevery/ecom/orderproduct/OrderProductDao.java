@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface OrderProductDao extends JpaRepository<OrderProduct,Integer>
 {
 
-        List<OrderProduct> findOrderProductsByVendorProduct_Vendor_Id(int vendorId);
+        List<OrderProduct> findOrderProductsByCartProduct_VendorProduct_Vendor_Id(int vendorId);
 }

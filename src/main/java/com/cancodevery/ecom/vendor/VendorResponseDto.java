@@ -1,6 +1,9 @@
 package com.cancodevery.ecom.vendor;
 
+import com.cancodevery.ecom.order.Order;
+import com.cancodevery.ecom.order.OrderResponse;
 import com.cancodevery.ecom.vendorproduct.VendorProduct;
+import com.cancodevery.ecom.vendorproduct.VendorProductResponseDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +12,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -29,5 +34,6 @@ public class VendorResponseDto
     private String contact;
 
 
+    private Set<OrderResponse> orders;
      private List<VendorProduct> vendorProducts=new ArrayList<>();
 }

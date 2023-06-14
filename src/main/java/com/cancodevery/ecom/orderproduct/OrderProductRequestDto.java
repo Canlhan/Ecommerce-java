@@ -6,7 +6,7 @@ import lombok.Data;
 public class OrderProductRequestDto
 {
     private int quantity;
-    private int vendorProductId;
+    private int cartProductId;
 
 
 }

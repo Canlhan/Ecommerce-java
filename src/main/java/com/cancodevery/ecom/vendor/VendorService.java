@@ -12,4 +12,6 @@ public interface VendorService
 
     AuthenticationResponse register(VendorRequestDto vendor);
     VendorResponseDto get(String email);
+
+    VendorResponseDto update(VendorRequestDto vendorRequest);
 }

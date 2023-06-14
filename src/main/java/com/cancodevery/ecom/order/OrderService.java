@@ -15,5 +15,7 @@ public interface OrderService
 
     void delete(int id);
 
+    List<OrderResponse> getOrdersByVendorId(int vendorId);
+
 
 }

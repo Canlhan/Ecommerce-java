@@ -20,10 +20,10 @@ import java.util.Set;
 @Builder
 public class CartProductResponseDto
 {
-
+    int id;
     int quantity;
 
     Cart cart;
 
-    Set<VendorProduct> vendorProduct;
+    VendorProduct vendorProduct;
 }

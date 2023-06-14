@@ -24,7 +24,7 @@ public class CartProduct
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
 
-    @Column(name = "Quantity")
+    @Column(name = "quantity")
     int quantity;
 
     @ManyToMany( mappedBy = "cartProducts")

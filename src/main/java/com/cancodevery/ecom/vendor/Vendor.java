@@ -1,7 +1,9 @@
 package com.cancodevery.ecom.vendor;
 
+import com.cancodevery.ecom.order.Order;
 import com.cancodevery.ecom.vendorproduct.VendorProduct;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +11,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -18,11 +22,11 @@ import java.util.List;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
 public class Vendor
 {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "vendor_id")
     int id;
-
     @Column(name = "vendor_name")
     String name;
 
@@ -35,7 +39,9 @@ public class Vendor
     @Column(name = "contact")
     String contact;
 
+    @ManyToMany(mappedBy = "vendors",cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
+    private Set<Order> orders=new HashSet<>();
 
-    @OneToMany(mappedBy = "vendor",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "vendor",cascade = CascadeType.REMOVE,fetch = FetchType.EAGER)
     List<VendorProduct> vendorProducts=new ArrayList<>();
 }
